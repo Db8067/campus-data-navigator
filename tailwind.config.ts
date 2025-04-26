@@ -1,3 +1,4 @@
+
 import type { Config } from "tailwindcss";
 
 export default {
@@ -61,6 +62,18 @@ export default {
 					'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
+				},
+				// Custom theme colors for our DBMS
+				dbms: {
+					primary: '#1E5091',
+					secondary: '#0EA5E9',
+					accent: '#38BDF8',
+					light: '#E0F2FE',
+					dark: '#0C4A6E',
+					success: '#10B981',
+					warning: '#F59E0B',
+					error: '#EF4444',
+					background: '#F8FAFC',
 				}
 			},
 			borderRadius: {
