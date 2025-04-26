@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import Layout from '@/components/Layout';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Users, Book, Calendar, DollarSign } from 'lucide-react';
+import { Users, Book, Calendar, IndianRupee } from 'lucide-react';
 import { getStudents, db, generateFakeData } from '@/services/database';
 import { Student } from '@/types';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
@@ -49,6 +49,15 @@ const Dashboard = () => {
     ];
     setFeesData(feesInfo);
   }, []);
+
+  // Format amount as Indian Rupees
+  const formatIndianRupees = (amount: number): string => {
+    return new Intl.NumberFormat('en-IN', {
+      style: 'currency',
+      currency: 'INR',
+      maximumFractionDigits: 0
+    }).format(amount);
+  };
 
   return (
     <Layout>
@@ -99,14 +108,14 @@ const Dashboard = () => {
           <Card className="bg-white">
             <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
               <CardTitle className="text-sm font-medium">Total Fees</CardTitle>
-              <DollarSign className="h-4 w-4 text-green-600" />
+              <IndianRupee className="h-4 w-4 text-green-600" />
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">
-                ${(students.reduce((acc, student) => acc + student.fees.total, 0)).toLocaleString()}
+                {formatIndianRupees(students.reduce((acc, student) => acc + student.fees.total, 0))}
               </div>
               <p className="text-xs text-muted-foreground">
-                ${(students.reduce((acc, student) => acc + student.fees.paid, 0)).toLocaleString()} paid
+                {formatIndianRupees(students.reduce((acc, student) => acc + student.fees.paid, 0))} paid
               </p>
             </CardContent>
           </Card>
@@ -124,15 +133,15 @@ const Dashboard = () => {
                 <ResponsiveContainer width="100%" height="100%">
                   <BarChart
                     data={departmentData}
-                    margin={{ top: 5, right: 30, left: 20, bottom: 60 }}
+                    margin={{ top: 5, right: 30, left: 20, bottom: 100 }}
                   >
                     <CartesianGrid strokeDasharray="3 3" />
                     <XAxis 
                       dataKey="department" 
                       angle={-45} 
                       textAnchor="end"
-                      height={70}
-                      tick={{ fontSize: 12 }}
+                      height={100}
+                      tick={{ fontSize: 10 }}
                     />
                     <YAxis />
                     <Tooltip />
@@ -167,7 +176,7 @@ const Dashboard = () => {
                         <Cell key={`cell-${index}`} fill={index === 0 ? '#0EA5E9' : '#EF4444'} />
                       ))}
                     </Pie>
-                    <Tooltip formatter={(value) => `$${value.toLocaleString()}`} />
+                    <Tooltip formatter={(value) => formatIndianRupees(Number(value))} />
                     <Legend />
                   </PieChart>
                 </ResponsiveContainer>

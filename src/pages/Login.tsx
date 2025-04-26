@@ -27,7 +27,7 @@ const Login = () => {
     <div className="min-h-screen flex items-center justify-center bg-dbms-background">
       <div className="max-w-md w-full px-4">
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-dbms-primary">Student Database Management System</h1>
+          <h1 className="text-3xl font-bold text-dbms-primary">STUDENT MANAGEMENT SYSTEM</h1>
           <p className="text-gray-600 mt-2">Sign in to access the database</p>
         </div>
         

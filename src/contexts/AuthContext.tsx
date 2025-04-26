@@ -72,7 +72,30 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const register = async (username: string, password: string, role: 'admin' | 'teacher' | 'student'): Promise<boolean> => {
     try {
+      // Check if a user with this username already exists
+      const storedUsers = localStorage.getItem('users');
+      let users = [];
+      
+      if (storedUsers) {
+        users = JSON.parse(storedUsers);
+        const userExists = users.some((user: User) => user.username === username);
+        if (userExists) {
+          toast({
+            title: "Registration Failed",
+            description: "Username already exists. Please choose another username.",
+            variant: "destructive",
+          });
+          return false;
+        }
+      }
+      
+      // Register the new user
       const newUser = registerUser(username, password, role);
+      
+      // Auto login after successful registration
+      setUser(newUser);
+      localStorage.setItem('currentUser', JSON.stringify(newUser));
+      
       toast({
         title: "Registration Successful",
         description: `Account created for ${username}.`,

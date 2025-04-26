@@ -3,11 +3,11 @@ import React, { useState, useEffect } from 'react';
 import Layout from '@/components/Layout';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogTrigger } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogFooter, DialogTrigger } from '@/components/ui/dialog';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Student, departments } from '@/types';
 import { getStudents, getStudentsByDepartment, addStudent, deleteStudent, generateFakeData } from '@/services/database';
-import { Plus, Search, Filter, Trash2, Edit } from 'lucide-react';
+import { Plus, Search, Filter, Trash2, Edit, IndianRupee } from 'lucide-react';
 import { useToast } from '@/components/ui/use-toast';
 
 const Students = () => {
@@ -62,6 +62,15 @@ const Students = () => {
     
     setFilteredStudents(result);
   }, [selectedDepartment, searchTerm, students]);
+
+  // Format amount as Indian Rupees
+  const formatIndianRupees = (amount: number): string => {
+    return new Intl.NumberFormat('en-IN', {
+      style: 'currency',
+      currency: 'INR',
+      maximumFractionDigits: 0
+    }).format(amount);
+  };
 
   const handleAddStudent = () => {
     if (!firstName || !lastName || !email || !department || !studentId) {
@@ -151,6 +160,7 @@ const Students = () => {
             <DialogContent className="sm:max-w-[500px]">
               <DialogHeader>
                 <DialogTitle>Add New Student</DialogTitle>
+                <DialogDescription>Enter student details to add them to the system.</DialogDescription>
               </DialogHeader>
               <div className="grid gap-4 py-4">
                 <div className="grid grid-cols-2 gap-4">
@@ -206,7 +216,7 @@ const Students = () => {
                   </Select>
                 </div>
                 <div className="space-y-2">
-                  <label htmlFor="fees" className="text-sm font-medium">Total Fees</label>
+                  <label htmlFor="fees" className="text-sm font-medium">Total Fees (₹)</label>
                   <Input
                     id="fees"
                     type="number"
@@ -276,7 +286,7 @@ const Students = () => {
                       <td>{student.department}</td>
                       <td>{student.enrollmentDate}</td>
                       <td>
-                        ${student.fees.paid.toLocaleString()} / ${student.fees.total.toLocaleString()}
+                        {formatIndianRupees(student.fees.paid)} / {formatIndianRupees(student.fees.total)}
                       </td>
                       <td>
                         <div className="flex gap-2">
